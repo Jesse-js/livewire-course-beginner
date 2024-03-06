@@ -7,18 +7,30 @@ use Livewire\Component;
 
 class Clicker extends Component
 {
-    public $username = 'Test User';
-    public function createNewUser() 
+    /**
+     * the public properties are aways visible for
+     * the users, so don't put sensitive data here,
+     * if you neeed use sensitive data put it in the 
+     * render method with local scope variables
+     */
+    public string $name;
+    public string $email;
+    public string $password;
+
+    /**
+     * all in the public variables should be validated
+     */
+    public function createNewUser()
     {
         User::create([
-            'name' => 'Test 2',
-            'email' => 'test2@test.com',
-            'password' => '12345678'
+            'name' => $this->name,
+            'email' => $this->email,
+            'password' => $this->password
         ]);
     }
     public function render()
     {
-        $title = 'Test';
+        $title = 'Users:';
 
         $users = User::all();
 
