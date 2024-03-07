@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 
@@ -28,17 +29,17 @@ class Clicker extends Component
      */
     public function createNewUser()
     {
-        $this->validate();
-        // $this->validate([
-        //     'name' => 'required|min:2|max:50',
-        //     'email' => 'required|email|unique:users',
-        //     'password' => 'required|min:8'
-        // ]);
+        $validated = $this->validate();
+
         User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password'])
         ]);
+
+        $this->reset(['name', 'email', 'password']);
+
+        request()->session()->flash('success', 'User created successfully!');
     }
     public function render()
     {
