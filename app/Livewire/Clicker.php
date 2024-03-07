@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Livewire\Component;
+use Livewire\Attributes\Validate;
 
 class Clicker extends Component
 {
@@ -13,15 +14,26 @@ class Clicker extends Component
      * if you neeed use sensitive data put it in the 
      * render method with local scope variables
      */
-    public string $name;
-    public string $email;
-    public string $password;
+    #[Validate('required|min:2|max:50')]
+    public string $name = '';
+    
+    #[Validate('required|email|unique:users')]
+    public string $email = '';
+
+    #[Validate('required|min:8')]
+    public string $password = '';
 
     /**
      * all in the public variables should be validated
      */
     public function createNewUser()
     {
+        $this->validate();
+        // $this->validate([
+        //     'name' => 'required|min:2|max:50',
+        //     'email' => 'required|email|unique:users',
+        //     'password' => 'required|min:8'
+        // ]);
         User::create([
             'name' => $this->name,
             'email' => $this->email,
