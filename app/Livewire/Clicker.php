@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\WithPagination;
 
 class Clicker extends Component
 {
@@ -15,6 +16,8 @@ class Clicker extends Component
      * if you neeed use sensitive data put it in the 
      * render method with local scope variables
      */
+    use WithPagination;
+    
     #[Validate('required|min:2|max:50')]
     public string $name = '';
     
@@ -45,7 +48,7 @@ class Clicker extends Component
     {
         $title = 'Users:';
 
-        $users = User::all();
+        $users = User::paginate(5);
 
         return view('livewire.clicker', [
             'title' => $title,
